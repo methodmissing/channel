@@ -1,0 +1,51 @@
+Simple native Channel object for Ruby MRI
+  (c) 2009 Lourens Naudé (methodmissing), James Tucker (raggi) 
+ 
+  http://github.com/methodmissing/channel
+
+This library works with Ruby 1.8 and 1.9 and is a more efficient
+implementation of the following Ruby code :
+
+  class RubyChannel
+    def initialize
+      @subscribers = []
+    end
+    def subscribe(&b)
+      @subscribers << b
+      self
+    end
+    def <<(o)
+      @subscribers.each { |s| s.call(o) }
+    end
+  end
+
+Use cases :
+
+  * In process message dispatch
+  * Parsers and protocols with a message, error and warning channel 
+  * Facilitates decoupled notification and callback patterns
+
+Caveats :
+
+  * Fixed width channel size for very thin, and fast, subscriber management
+
+Examples :
+
+  counter = 0
+  ch = Channel.new.subscribe{|obj| @counter += obj }
+  ch << 3
+  ch << -2
+  counter #=> 1  
+
+Todo :
+  
+  * A deferrable mode that notifies on a background thread
+  * More flexible notification mechanism through integration with http://github.com/methodmissing/callback/tree/master 
+
+To run the test suite:
+
+  rake
+
+To run the benchmarks:
+
+  rake bench
