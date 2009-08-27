@@ -1,0 +1,43 @@
+methodmissing:channel lourens$ ruby -v
+ruby 1.8.7 (2008-08-11 patchlevel 72) [i686-darwin9.5.1]
+methodmissing:channel lourens$ rake bench
+(in /Users/lourens/projects/channel)
+/opt/local/bin/ruby extconf.rb
+checking for rb_thread_blocking_region()... no
+checking for rb_trap_immediate in ruby.h,rubysig.h... yes
+creating Makefile
+make
+gcc -I. -I. -I/opt/local/lib/ruby/1.8/i686-darwin9.5.1 -I. -DHAVE_RB_TRAP_IMMEDIATE -DRUBY18  -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE   -fno-common -O2 -pipe -fno-common   -c channel.c
+cc -dynamic -bundle -undefined suppress -flat_namespace -o channel.bundle channel.o -L. -L/opt/local/lib -L.     -ldl -lobjc  
+/opt/local/bin/ruby bench/bench.rb
+Rehearsal --------------------------------------------------
+Channel#<<       0.100000   0.000000   0.100000 (  0.099925)
+RubyChannel#<<   0.150000   0.000000   0.150000 (  0.157261)
+----------------------------------------- total: 0.250000sec
+
+                     user     system      total        real
+Channel#<<       0.100000   0.000000   0.100000 (  0.101301)
+RubyChannel#<<   0.160000   0.000000   0.160000 (  0.158830)
+
+
+methodmissing:channel lourens$ ruby -v
+ruby 1.9.2dev (2009-07-18) [i386-darwin9.7.0]
+methodmissing:channel lourens$ rake bench
+(in /Users/lourens/projects/channel)
+/opt/local/ruby19/bin/ruby extconf.rb
+checking for rb_thread_blocking_region()... yes
+checking for RUBY_UBF_IO in ruby.h... yes
+checking for rb_trap_immediate in ruby.h,rubysig.h... no
+creating Makefile
+make
+gcc -I. -I/opt/local/ruby19/include/ruby-1.9.1/i386-darwin9.7.0 -I/opt/local/ruby19/include/ruby-1.9.1/ruby/backward -I/opt/local/ruby19/include/ruby-1.9.1 -I. -DHAVE_RB_THREAD_BLOCKING_REGION -DRUBY19 -D_XOPEN_SOURCE -D_DARWIN_C_SOURCE   -fno-common -O3 -g -Wall -Wno-unused-parameter -Wno-parentheses -Wno-missing-field-initializers -Wshorten-64-to-32 -Wpointer-arith -Wwrite-strings  -pipe  -o channel.o -c channel.c
+gcc -dynamic -bundle -undefined suppress -flat_namespace -o channel.bundle channel.o -L. -L/opt/local/ruby19/lib -L. -L/usr/local/lib    -lpthread -ldl -lobjc 
+/opt/local/ruby19/bin/ruby bench/bench.rb
+Rehearsal --------------------------------------------------
+Channel#<<       0.030000   0.000000   0.030000 (  0.032627)
+RubyChannel#<<   0.050000   0.000000   0.050000 (  0.056614)
+----------------------------------------- total: 0.080000sec
+
+                     user     system      total        real
+Channel#<<       0.030000   0.000000   0.030000 (  0.031530)
+RubyChannel#<<   0.050000   0.000000   0.050000 (  0.056319)
