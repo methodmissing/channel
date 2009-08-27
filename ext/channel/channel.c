@@ -14,7 +14,10 @@ static ID id_call;
 
 static void mark_channel(RChannel* ch)
 {
-    rb_gc_mark(ch->subscribers);
+    int i;
+    for (i=0; i < ch->sbs; i++) {
+      rb_gc_mark(ch->subscribers[i]);
+    }
 }
 
 static void free_channel(RChannel* ch)
