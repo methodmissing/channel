@@ -63,6 +63,7 @@ task :setup => %w(clean build install)
 
 desc "run benchmarks"
 task :bench do |t|
-  ruby "bench/bench.rb"  
+  ruby "bench/bench.rb"
+  ruby "bench/bench_deferred.rb"    
 end
 task :bench => :build
