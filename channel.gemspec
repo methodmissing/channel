@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "channel"
-  s.version  = "1.0.0"
+  s.version  = "1.0.1"
   s.date     = "2009-08-28"
   s.summary  = "Native MRI channel"
   s.email    = "lourens@methodmissing.com"
