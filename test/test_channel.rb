@@ -23,6 +23,13 @@ class TestChannel < Test::Unit::TestCase
     assert_raises(ArgumentError){ Channel.new.subscribe(:arg) }    
   end 
   
+  def test_subscriber_threshold
+    ch = Channel.new(3)
+    assert_raises ArgumentError do
+      4.times{ ch.subscribe{|o| o } }
+    end
+  end
+  
   def test_push
     @counter = 0
     ch = Channel.new.subscribe{|obj| @counter += obj }

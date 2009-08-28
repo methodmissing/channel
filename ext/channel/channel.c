@@ -82,6 +82,7 @@ rb_channel_subscribe( int argc, VALUE *argv, VALUE ch )
     VALUE cb;
     RChannel* chs = GetChannelStruct(ch);    
     if (!rb_block_given_p()) rb_raise(rb_eArgError, "Block callback required!");
+	if (chs->sbs == chs->size) rb_raise(rb_eArgError, "Maximum number of subscribers exceeded!");
     cb = rb_block_proc();
     chs->subscribers[chs->sbs] = cb;
     chs->sbs++;

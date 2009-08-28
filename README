@@ -32,7 +32,7 @@ Caveats :
 Examples :
 
   counter = 0
-  ch = Channel.new.subscribe{|obj| @counter += obj }
+  ch = Channel.new.subscribe{|obj| counter += obj }
   ch << 3
   ch << -2
   counter #=> 1  
@@ -41,6 +41,7 @@ Todo :
   
   * A deferrable mode that notifies on a background thread
   * More flexible notification mechanism through integration with http://github.com/methodmissing/callback/tree/master 
+  * Filters
 
 To run the test suite:
 
