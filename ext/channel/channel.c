@@ -7,6 +7,11 @@ typedef struct {
     VALUE *subscribers;
 } RChannel;
 
+typedef struct{
+  RChannel *chs;
+  VALUE *obj;
+} deferred_push_args;
+
 #define MAX_CHANNEL_SIZE 32
 #define GetChannelStruct(obj)	(Check_Type(obj, T_DATA), (RChannel*)DATA_PTR(obj))
 
@@ -101,7 +106,7 @@ rb_channel_subscribe( int argc, VALUE *argv, VALUE ch )
 }
 
 static void 
-rb_channel_push0( RChannel* chs, VALUE *ch, VALUE *obj )
+rb_channel_push0( RChannel* chs, VALUE *obj )
 {
     int i;    
     for (i=0; i < chs->sbs; i++) {
@@ -109,18 +114,28 @@ rb_channel_push0( RChannel* chs, VALUE *ch, VALUE *obj )
     }  
 }
 
+static void 
+rb_channel_push1( deferred_push_args *args )
+{
+    RChannel* chs = args->chs;
+    VALUE obj = *(args->obj);
+    int i;    
+    for (i=0; i < chs->sbs; i++) {
+      rb_funcall(chs->subscribers[i],id_call,1,obj);
+    }
+}
+
 static VALUE 
 rb_channel_push( VALUE ch, VALUE obj )
 {
-    void *args[3]; 
+    deferred_push_args args;
     RChannel* chs = GetChannelStruct(ch);
     if (chs->defer == 1){
-      args[0] = chs;
-      args[1] = &ch;
-      args[2] = &obj;
-      rb_thread_create( rb_channel_push0, &args);
+      args.chs = chs;
+      args.obj = &obj;
+      rb_thread_create(rb_channel_push1,&args);
     }else{
-      rb_channel_push0(chs,&ch,&obj);
+      rb_channel_push0(chs,&obj);
     }
     return ch;
 }

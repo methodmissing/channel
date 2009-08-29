@@ -59,5 +59,7 @@ class TestChannel < Test::Unit::TestCase
         ch << 3
       end
     end
+    ch << 0.5
+    sleep 0.7
   end  
 end
