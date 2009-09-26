@@ -39,7 +39,7 @@ Examples :
 
 Todo :
   
-  * A deferrable mode that notifies on a background thread
+  * A deferrable mode that notifies on a background thread (pending 1.9)
   * More flexible notification mechanism through integration with http://github.com/methodmissing/callback/tree/master 
   * Filters
 
